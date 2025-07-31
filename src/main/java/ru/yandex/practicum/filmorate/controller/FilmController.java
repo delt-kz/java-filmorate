@@ -51,15 +51,15 @@ public class FilmController {
             log.warn("Попытка добавить фильм с пустым названием: {}", film);
             throw new ValidationException("Название фильма не может быть пустым");
         }
-        if (film.getDescription().length() > 200) {
+        if (film.getDescription() != null && film.getDescription().length() > 200) {
             log.warn("Попытка добавить фильм с описанием более 200 символов: {}", film);
             throw new ValidationException("Описание фильма не может быть больше 200 символов.");
         }
-        if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
+        if (film.getReleaseDate() != null && film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
             log.warn("Попытка добавить фильм с датой релиза раньше 28.12.1895: {}", film);
             throw new ValidationException("Дата релиза не может быть раньше 28 декабря 1895 года.");
         }
-        if (film.getDuration() < 0) {
+        if (film.getDuration() != null && film.getDuration() < 0) {
             log.warn("Попытка добавить фильм с отрицательной продолжительностью: {}", film);
             throw new ValidationException("Продолжительность фильма не может быть отрицательной.");
         }

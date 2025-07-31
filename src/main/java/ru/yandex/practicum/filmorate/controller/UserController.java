@@ -69,7 +69,7 @@ public class UserController {
             log.warn("Попытка создать пользователя с логином, содержащим пробелы: {}", user);
             throw new ValidationException("Логин не может содержать пробелы.");
         }
-        if (user.getBirthday().isAfter(LocalDate.now())) {
+        if (user.getBirthday() != null && user.getBirthday().isAfter(LocalDate.now())) {
             log.warn("Попытка создать пользователя с датой рождения в будущем: {}", user);
             throw new ValidationException("Дата рождения не может быть в будущем.");
         }
