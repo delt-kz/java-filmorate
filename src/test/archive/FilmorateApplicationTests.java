@@ -1,12 +1,12 @@
-package ru.yandex.practicum.filmorate;
+package archive;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import ru.yandex.practicum.filmorate.controller.FilmController;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 
@@ -33,7 +33,7 @@ class FilmorateApplicationTests {
         Film film = getValidFilm();
         film.setName("  ");
 
-        assertThrows(ValidationException.class, () -> controller.addFilm(film));
+        assertThrows(MethodArgumentNotValidException.class, () -> controller.addFilm(film));
     }
 
     @Test
@@ -41,7 +41,7 @@ class FilmorateApplicationTests {
         Film film = getValidFilm();
         film.setDescription("a".repeat(201));
 
-        assertThrows(ValidationException.class, () -> controller.addFilm(film));
+        assertThrows(MethodArgumentNotValidException.class, () -> controller.addFilm(film));
     }
 
     @Test
@@ -49,7 +49,7 @@ class FilmorateApplicationTests {
         Film film = getValidFilm();
         film.setReleaseDate(LocalDate.of(1800, 1, 1));
 
-        assertThrows(ValidationException.class, () -> controller.addFilm(film));
+        assertThrows(MethodArgumentNotValidException.class, () -> controller.addFilm(film));
     }
 
     @Test
@@ -57,7 +57,7 @@ class FilmorateApplicationTests {
         Film film = getValidFilm();
         film.setDuration(-90);
 
-        assertThrows(ValidationException.class, () -> controller.addFilm(film));
+        assertThrows(MethodArgumentNotValidException.class, () -> controller.addFilm(film));
     }
 
     private Film getValidFilm() {

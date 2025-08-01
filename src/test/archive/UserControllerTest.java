@@ -1,10 +1,10 @@
-package ru.yandex.practicum.filmorate;
+package archive;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
@@ -44,7 +44,7 @@ public class UserControllerTest {
         User user = getValidUser();
         user.setEmail(" ");
 
-        assertThrows(ValidationException.class, () -> controller.addUser(user));
+        assertThrows(MethodArgumentNotValidException.class, () -> controller.addUser(user));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class UserControllerTest {
         User user = getValidUser();
         user.setEmail("invalidemail.com");
 
-        assertThrows(ValidationException.class, () -> controller.addUser(user));
+        assertThrows(MethodArgumentNotValidException.class, () -> controller.addUser(user));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class UserControllerTest {
         User user = getValidUser();
         user.setLogin("  ");
 
-        assertThrows(ValidationException.class, () -> controller.addUser(user));
+        assertThrows(MethodArgumentNotValidException.class, () -> controller.addUser(user));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class UserControllerTest {
         User user = getValidUser();
         user.setLogin("bad login");
 
-        assertThrows(ValidationException.class, () -> controller.addUser(user));
+        assertThrows(MethodArgumentNotValidException.class, () -> controller.addUser(user));
     }
 
     @Test
@@ -76,7 +76,7 @@ public class UserControllerTest {
         User user = getValidUser();
         user.setBirthday(LocalDate.now().plusDays(1));
 
-        assertThrows(ValidationException.class, () -> controller.addUser(user));
+        assertThrows(MethodArgumentNotValidException.class, () -> controller.addUser(user));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class UserControllerTest {
 
         controller.addUser(user1);
 
-        assertThrows(ValidationException.class, () -> controller.addUser(user2));
+        assertThrows(MethodArgumentNotValidException.class, () -> controller.addUser(user2));
     }
 
     @Test
