@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
@@ -17,6 +18,7 @@ public class FilmController {
     private final FilmService filmService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Film add(@Valid @RequestBody Film film) {
         log.debug("POST /films с телом: {}", film);
         return filmService.add(film);

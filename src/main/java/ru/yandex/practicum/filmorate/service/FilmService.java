@@ -17,7 +17,7 @@ public class FilmService {
     private final FilmStorage storage;
 
     public Film add(Film film) {
-        film.setId(storage.getMaxId());
+        film.setId(storage.getMaxId()+1);
         log.trace("Film ID: {}", film.getId());
         storage.put(film.getId(), film);
         log.info("Добавлен фильм: {}", film);
