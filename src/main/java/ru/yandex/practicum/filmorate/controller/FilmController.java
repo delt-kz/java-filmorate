@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.service.LikeService;
 
 import java.util.Collection;
 
@@ -16,6 +17,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class FilmController {
     private final FilmService filmService;
+    private final LikeService likeService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -40,5 +42,23 @@ public class FilmController {
     public Film get(@PathVariable long filmId) {
         log.debug("GET /films/{}", filmId);
         return filmService.get(filmId);
+    }
+
+    @PutMapping("/{filmId}/like/{userId}")
+    public void like(@PathVariable long filmId, @PathVariable long userId) {
+        log.debug("PUT /{}/like/{}", filmId, userId);
+        likeService.like(filmId, userId);
+    }
+
+    @DeleteMapping("/{filmId}/like/{userId}")
+    public void unlike(@PathVariable long filmId, @PathVariable long userId) {
+        log.debug("DELETE /{}/like/{}", filmId, userId);
+        likeService.unlike(filmId, userId);
+    }
+
+    @GetMapping("/popular")
+    public Collection<Film> getPopular(@RequestParam(defaultValue = "10") int count) {
+        log.debug("GET /popular");
+        return filmService.getPopular(count);
     }
 }

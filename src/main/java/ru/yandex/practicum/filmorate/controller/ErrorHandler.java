@@ -45,4 +45,10 @@ public class ErrorHandler {
         log.warn("Ошибка валидаций: {}", error);
         return new ResponseEntity<>(new ErrorResponse("Ошибка валидаций: " + error), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleIllegalArgument(final IllegalArgumentException e) {
+        log.warn(e.getMessage());
+        return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
 }

@@ -24,7 +24,7 @@ public class UserService {
                     "Невозможно добавить пользователя с существующим адресом электронной почты: " + user.getEmail());
         }
         ensureNameIsNotBlank(user);
-        user.setId(storage.getMaxId()+1);
+        user.setId(storage.getMaxId() + 1);
         log.trace("User ID: {}", user.getId());
         storage.put(user.getId(), user);
         log.info("Добавлен пользователь: {}", user);
