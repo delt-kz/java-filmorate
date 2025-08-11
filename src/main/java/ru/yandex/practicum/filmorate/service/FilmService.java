@@ -20,7 +20,7 @@ public class FilmService {
 
     public Film add(Film film) {
         film.setId(storage.getMaxId() + 1);
-        log.trace("Film ID: {}", film.getId());
+        log.debug("Film ID: {}", film.getId());
         storage.put(film.getId(), film);
         log.info("Добавлен фильм: {}", film);
         return film;

@@ -46,14 +46,14 @@ public class FilmController {
 
     @PutMapping("/{filmId}/like/{userId}")
     public void like(@PathVariable long filmId, @PathVariable long userId) {
-        log.debug("PUT /{}/like/{}", filmId, userId);
+        log.debug("PUT /films/{}/like/{} -> filmId={}, userId={}", filmId, userId, filmId, userId);
         likeService.like(filmId, userId);
     }
 
     @DeleteMapping("/{filmId}/like/{userId}")
-    public void unlike(@PathVariable long filmId, @PathVariable long userId) {
-        log.debug("DELETE /{}/like/{}", filmId, userId);
-        likeService.unlike(filmId, userId);
+    public void dislike(@PathVariable long filmId, @PathVariable long userId) {
+        log.debug("DELETE /films/{}/like/{} -> filmId={}, userId={}", filmId, userId, filmId, userId);
+        likeService.dislike(filmId, userId);
     }
 
     @GetMapping("/popular")

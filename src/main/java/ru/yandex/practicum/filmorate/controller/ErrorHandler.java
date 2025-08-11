@@ -28,12 +28,6 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleValidationException(final ValidationException e) {
-        log.warn(e.getMessage());
-        return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleThrowable(final Throwable e) {
         log.warn("Неожиданная ошибка ", e);
         return new ResponseEntity<>(new ErrorResponse("Внутренняя ошибка сервера"), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -46,8 +40,8 @@ public class ErrorHandler {
         return new ResponseEntity<>(new ErrorResponse("Ошибка валидаций: " + error), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleIllegalArgument(final IllegalArgumentException e) {
+    @ExceptionHandler({ValidationException.class, IllegalArgumentException.class})
+    public ResponseEntity<ErrorResponse> handleIllegalArgument(final RuntimeException e) {
         log.warn(e.getMessage());
         return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
     }

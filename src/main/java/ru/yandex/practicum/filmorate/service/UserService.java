@@ -17,15 +17,13 @@ public class UserService {
     private final UserStorage storage;
 
     public User add(User user) {
-        if (storage.findAll().stream()
-                .map(User::getEmail)
-                .anyMatch(email -> email.equals(user.getEmail()))) {
+        if (isEmailExists(user.getEmail())) {
             throw new ValidationException(
                     "Невозможно добавить пользователя с существующим адресом электронной почты: " + user.getEmail());
         }
         ensureNameIsNotBlank(user);
         user.setId(storage.getMaxId() + 1);
-        log.trace("User ID: {}", user.getId());
+        log.debug("User ID: {}", user.getId());
         storage.put(user.getId(), user);
         log.info("Добавлен пользователь: {}", user);
         return user;
@@ -61,5 +59,11 @@ public class UserService {
             log.warn("Имя пользователя пустое, подставляем логин как имя: {}", user.getLogin());
             user.setName(user.getLogin());
         }
+    }
+
+    private boolean isEmailExists(String email) {
+        return storage.findAll().stream()
+                .map(User::getEmail)
+                .anyMatch(email::equals);
     }
 }

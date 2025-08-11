@@ -20,19 +20,19 @@ public class LikeService {
 
     public void like(long filmId, long userId) {
         Film film = Optional.ofNullable(filmStorage.get(filmId))
-                .orElseThrow(() -> new NotFoundException("Фильм c id " + userId + " не существует"));
-        User user =  Optional.ofNullable(userStorage.get(userId))
+                .orElseThrow(() -> new NotFoundException("Фильм c id " + filmId + " не существует"));
+        User user = Optional.ofNullable(userStorage.get(userId))
                 .orElseThrow(() -> new NotFoundException("Пользователя c id " + userId + " не существует"));
 
         film.getLikes().add(userId);
     }
 
-    public void unlike(long filmId, long userId) {
+    public void dislike(long filmId, long userId) {
         Film film = Optional.ofNullable(filmStorage.get(filmId))
-                .orElseThrow(() -> new NotFoundException("Фильм c id " + userId + " не существует"));
-        User user =  Optional.ofNullable(userStorage.get(userId))
+                .orElseThrow(() -> new NotFoundException("Фильм c id " + filmId + " не существует"));
+        // validate that user exists
+        Optional.ofNullable(userStorage.get(userId))
                 .orElseThrow(() -> new NotFoundException("Пользователя c id " + userId + " не существует"));
-
         film.getLikes().remove(userId);
     }
 }
