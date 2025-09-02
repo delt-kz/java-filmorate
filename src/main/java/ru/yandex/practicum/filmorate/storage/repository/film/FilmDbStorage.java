@@ -1,0 +1,55 @@
+package ru.yandex.practicum.filmorate.storage.repository.film;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.mapper.FilmRowMapper;
+import ru.yandex.practicum.filmorate.storage.repository.BaseDbStorage;
+
+import java.sql.Date;
+import java.util.Collection;
+import java.util.Optional;
+
+public class FilmDbStorage extends BaseDbStorage implements FilmStorage {
+    private final static String FIND_ALL_QUERY = "SELECT * FROM films";
+    private final static String FIND_BY_ID_QUERY = "SELECT * FROM films WHERE id = ?";
+    private final static String INSERT_QUERY = "INSERT INTO films (name, description, release_date, duration, rating_id)  VALUES (?,?,?,?,?)";
+    private final static String UPDATE_QUERY = "UPDATE FROM films SET name = ?, description = ?, release_date = ?, duration = ?, rating_id = ? WHERE id = ?";
+    private final static String DELETE_QUERY = "DELETE FROM films WHERE id = ?";
+
+    public FilmDbStorage(JdbcTemplate jdbc, FilmRowMapper mapper) {
+        super(jdbc, mapper);
+    }
+
+    public Optional<Film> get(Long id) {
+        return findOne(FIND_BY_ID_QUERY, id);
+    }
+
+    public Collection<Film> findAll() {
+        return findMany(FIND_ALL_QUERY);
+    }
+
+    public Film put(Film film) {
+        Long id = insert(INSERT_QUERY,
+                film.getName(),
+                film.getDescription(),
+                Date.valueOf(film.getReleaseDate()),
+                film.getDuration(),
+                film.getRating().getId());
+        film.setId(id);
+        return film;
+    }
+
+    public boolean update(Film film) {
+        return update(UPDATE_QUERY,
+                film.getName(),
+                film.getDescription(),
+                Date.valueOf(film.getReleaseDate()),
+                film.getDuration(),
+                film.getRating().getId(),
+                film.getId());
+    }
+
+    public boolean delete(Long id) {
+        return delete(DELETE_QUERY, id);
+    }
+}

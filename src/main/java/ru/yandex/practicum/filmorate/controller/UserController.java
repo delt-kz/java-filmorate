@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.dto.user.CreateUserDto;
+import ru.yandex.practicum.filmorate.dto.user.UpdateUserDto;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.FriendService;
 import ru.yandex.practicum.filmorate.service.UserService;
@@ -21,13 +23,13 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User addUser(@Valid @RequestBody User user) {
+    public User addUser(@Valid @RequestBody CreateUserDto user) {
         log.debug("POST /users с телом: {}", user);
         return userService.add(user);
     }
 
     @PutMapping
-    public User update(@Valid @RequestBody User user) {
+    public User update(@Valid @RequestBody UpdateUserDto user) {
         log.debug("PUT /users с телом: {}", user);
         return userService.update(user);
     }
