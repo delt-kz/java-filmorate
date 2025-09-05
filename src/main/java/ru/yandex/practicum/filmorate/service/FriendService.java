@@ -8,7 +8,6 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.repository.friendship.FriendshipStorage;
 import ru.yandex.practicum.filmorate.storage.repository.user.UserStorage;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;

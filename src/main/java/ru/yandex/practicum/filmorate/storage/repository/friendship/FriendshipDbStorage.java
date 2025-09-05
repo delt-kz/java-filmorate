@@ -3,14 +3,9 @@ package ru.yandex.practicum.filmorate.storage.repository.friendship;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import ru.yandex.practicum.filmorate.model.FriendshipStatus;
-import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.model.Friendship;
-import ru.yandex.practicum.filmorate.storage.mapper.FriendshipRowMapper;
 import ru.yandex.practicum.filmorate.storage.repository.BaseDbStorage;
-import java.util.List;
 
-import java.util.Set;
+import java.util.List;
 
 @Repository
 public class FriendshipDbStorage extends BaseDbStorage<Long> implements FriendshipStorage {

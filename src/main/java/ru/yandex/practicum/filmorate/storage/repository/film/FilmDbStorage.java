@@ -12,11 +12,11 @@ import java.util.Optional;
 
 @Repository
 public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage {
-    private final static String FIND_ALL_QUERY = "SELECT * FROM films";
-    private final static String FIND_BY_ID_QUERY = "SELECT * FROM films WHERE id = ?";
-    private final static String INSERT_QUERY = "INSERT INTO films (name, description, release_date, duration, rating_id)  VALUES (?,?,?,?,?)";
-    private final static String UPDATE_QUERY = "UPDATE films SET name = ?, description = ?, release_date = ?, duration = ?, rating_id = ? WHERE id = ?";
-    private final static String DELETE_QUERY = "DELETE FROM films WHERE id = ?";
+    private static final String FIND_ALL_QUERY = "SELECT * FROM films";
+    private static final String FIND_BY_ID_QUERY = "SELECT * FROM films WHERE id = ?";
+    private static final String INSERT_QUERY = "INSERT INTO films (name, description, release_date, duration, rating_id)  VALUES (?,?,?,?,?)";
+    private static final String UPDATE_QUERY = "UPDATE films SET name = ?, description = ?, release_date = ?, duration = ?, rating_id = ? WHERE id = ?";
+    private static final String DELETE_QUERY = "DELETE FROM films WHERE id = ?";
 
     public FilmDbStorage(JdbcTemplate jdbc, FilmRowMapper mapper) {
         super(jdbc, mapper);
