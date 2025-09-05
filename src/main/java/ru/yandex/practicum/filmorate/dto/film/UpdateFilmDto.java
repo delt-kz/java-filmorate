@@ -1,13 +1,16 @@
 package ru.yandex.practicum.filmorate.dto.film;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+import lombok.Data;
+import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.Rating;
 import ru.yandex.practicum.filmorate.validation.ReleaseDateConstraint;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
+@Data
 public class UpdateFilmDto {
     @NotNull(message = "id пользователя для обновления должен быть указан")
     private Long id;
@@ -18,6 +21,30 @@ public class UpdateFilmDto {
     private LocalDate releaseDate;
     @Positive(message = "Продолжительность фильма должна быть положительной")
     private Integer duration;
+    private Rating mpa;
+    private Set<Genre> genres = new HashSet<>();
 
-    public boolean ф
+    public boolean hasName() {
+        return ! (name == null || name.isBlank());
+    }
+
+    public boolean hasDescription() {
+        return ! (description == null || description.isBlank());
+    }
+
+    public boolean hasReleaseDate() {
+        return ! (releaseDate == null);
+    }
+
+    public boolean hasDuration() {
+        return ! (duration == null);
+    }
+
+    public boolean hasRating() {
+        return ! (mpa == null);
+    }
+
+    public boolean hasGenres() {
+        return ! (genres == null || genres.isEmpty());
+    }
 }

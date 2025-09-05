@@ -13,7 +13,6 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 @RequiredArgsConstructor
 public class BaseDbStorage<T> {
     private final JdbcTemplate jdbc;
@@ -51,13 +50,17 @@ public class BaseDbStorage<T> {
         }
     }
 
+    protected void insertWithoutId(String sql, Object... params) {
+        jdbc.update(sql, params);
+    }
+
     protected boolean update(String sql, Object... params) {
-        int i = jdbc.update(sql);
+        int i = jdbc.update(sql, params);
         return i > 0;
     }
 
-    protected boolean delete(String sql, Long id) {
-        int i = jdbc.update(sql, id);
+    protected boolean delete(String sql, Object... params) {
+        int i = jdbc.update(sql, params);
         return i > 0;
     }
 }

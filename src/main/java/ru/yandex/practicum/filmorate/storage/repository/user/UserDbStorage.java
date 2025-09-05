@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.storage.repository.user;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.mapper.UserRowMapper;
 import ru.yandex.practicum.filmorate.storage.repository.BaseDbStorage;
@@ -9,11 +10,12 @@ import java.sql.Date;
 import java.util.Collection;
 import java.util.Optional;
 
-public class UserDbStorage extends BaseDbStorage implements UserStorage {
+@Repository
+public class UserDbStorage extends BaseDbStorage<User> implements UserStorage {
     private final static String FIND_ALL_QUERY = "SELECT * FROM users";
     private final static String FIND_BY_ID_QUERY = "SELECT * FROM users WHERE id = ?";
     private final static String INSERT_QUERY = "INSERT INTO users (email, login, name, birthday)  VALUES (?,?,?,?)";
-    private final static String UPDATE_QUERY = "UPDATE FROM users SET email = ?, login = ?, name = ?, birthday = ? WHERE id = ?";
+    private final static String UPDATE_QUERY = "UPDATE users SET email = ?, login = ?, name = ?, birthday = ? WHERE id = ?";
     private final static String DELETE_QUERY = "DELETE FROM users WHERE id = ?";
 
     public UserDbStorage(JdbcTemplate jdbc, UserRowMapper mapper) {

@@ -5,8 +5,11 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import ru.yandex.practicum.filmorate.model.Genre;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Data
@@ -21,6 +24,7 @@ public class UpdateUserDto {
     @PastOrPresent(message = "Дата рождения не может быть в будущем")
     private LocalDate birthday;
 
+
     public boolean hasEmail() {
         return ! (email == null || email.isBlank());
     }
@@ -34,6 +38,6 @@ public class UpdateUserDto {
     }
 
     public boolean hasBirthday() {
-        return ! (email == null || email.isBlank());
+        return ! (birthday == null);
     }
 }

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.repository.friendship.FriendshipStorage;
 import ru.yandex.practicum.filmorate.storage.repository.user.UserStorage;
 
 import java.util.Objects;
@@ -16,47 +17,45 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class FriendService {
-    private final UserStorage storage;
+    private final FriendshipStorage friendshipStorage;
+    private final UserStorage userStorage;
 
     public void add(long userId, long friendId) {
-        User user = Optional.ofNullable(storage.get(userId))
+        User user = userStorage.get(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователя c id " + userId + " не существует"));
-        User friend = Optional.ofNullable(storage.get(friendId))
+        User friend = userStorage.get(friendId)
                 .orElseThrow(() -> new NotFoundException("Пользователя c id " + friendId + " не существует"));
         if (userId == friendId) {
             throw new IllegalArgumentException("Нельзя добавить себя в друзья");
         }
-        user.getFriends().add(friendId);
-        friend.getFriends().add(userId);
+        friendshipStorage.add(userId, friendId);
     }
 
     public void delete(long userId, long friendId) {
-        User user = Optional.ofNullable(storage.get(userId))
+        User user = userStorage.get(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователя c id " + userId + " не существует"));
-        User friend = Optional.ofNullable(storage.get(friendId))
+        User friend = userStorage.get(friendId)
                 .orElseThrow(() -> new NotFoundException("Пользователя c id " + friendId + " не существует"));
-        user.getFriends().remove(friendId);
-        friend.getFriends().remove(userId);
+        friendshipStorage.delete(userId, friendId);
     }
 
     public Set<User> get(long userId) {
-        User user = Optional.ofNullable(storage.get(userId))
+        User user = userStorage.get(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователя c id " + userId + " не существует"));
-        return user.getFriends().stream()
-                .map(storage::get)
-                .filter(Objects::nonNull)
+        return friendshipStorage.get(userId).stream()
+                .map(userStorage::get)
+                .flatMap(Optional::stream)
                 .collect(Collectors.toSet());
     }
 
     public Set<User> getCommon(long userId, long otherId) {
-        User user = Optional.ofNullable(storage.get(userId))
+        User user = userStorage.get(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователя c id " + userId + " не существует"));
-            User other = Optional.ofNullable(storage.get(otherId))
+            User other = userStorage.get(otherId)
                 .orElseThrow(() -> new NotFoundException("Пользователя c id " + otherId + " не существует"));
-        return user.getFriends().stream()
-                .filter(other.getFriends()::contains)
-                .map(storage::get)
-                .filter(Objects::nonNull)
+        return friendshipStorage.getCommon(userId, otherId).stream()
+                .map(userStorage::get)
+                .flatMap(Optional::stream)
                 .collect(Collectors.toSet());
     }
 }

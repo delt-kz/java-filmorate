@@ -4,12 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.repository.film.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.repository.LikeDbStorage;
 import ru.yandex.practicum.filmorate.storage.repository.user.UserStorage;
 
-import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -17,22 +16,27 @@ import java.util.Optional;
 public class LikeService {
     private final FilmStorage filmStorage;
     private final UserStorage userStorage;
+    private final LikeDbStorage likeStorage;
 
     public void like(long filmId, long userId) {
-        Film film = Optional.ofNullable(filmStorage.get(filmId))
+        filmStorage.get(filmId)
                 .orElseThrow(() -> new NotFoundException("Фильм c id " + filmId + " не существует"));
-        User user = Optional.ofNullable(userStorage.get(userId))
+        userStorage.get(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователя c id " + userId + " не существует"));
 
-        film.getLikes().add(userId);
+        likeStorage.add(filmId, userId);
     }
 
     public void dislike(long filmId, long userId) {
-        Film film = Optional.ofNullable(filmStorage.get(filmId))
+        filmStorage.get(filmId)
                 .orElseThrow(() -> new NotFoundException("Фильм c id " + filmId + " не существует"));
-        // validate that user exists
-        Optional.ofNullable(userStorage.get(userId))
+        userStorage.get(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователя c id " + userId + " не существует"));
-        film.getLikes().remove(userId);
+
+        likeStorage.delete(filmId, userId);
+    }
+
+    public Set<Long> getFilmLikes(long filmId) {
+        return Set.copyOf(likeStorage.getFilmLikes(filmId));
     }
 }

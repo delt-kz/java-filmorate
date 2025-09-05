@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.storage.repository.film;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.mapper.FilmRowMapper;
 import ru.yandex.practicum.filmorate.storage.repository.BaseDbStorage;
@@ -9,11 +10,12 @@ import java.sql.Date;
 import java.util.Collection;
 import java.util.Optional;
 
-public class FilmDbStorage extends BaseDbStorage implements FilmStorage {
+@Repository
+public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage {
     private final static String FIND_ALL_QUERY = "SELECT * FROM films";
     private final static String FIND_BY_ID_QUERY = "SELECT * FROM films WHERE id = ?";
     private final static String INSERT_QUERY = "INSERT INTO films (name, description, release_date, duration, rating_id)  VALUES (?,?,?,?,?)";
-    private final static String UPDATE_QUERY = "UPDATE FROM films SET name = ?, description = ?, release_date = ?, duration = ?, rating_id = ? WHERE id = ?";
+    private final static String UPDATE_QUERY = "UPDATE films SET name = ?, description = ?, release_date = ?, duration = ?, rating_id = ? WHERE id = ?";
     private final static String DELETE_QUERY = "DELETE FROM films WHERE id = ?";
 
     public FilmDbStorage(JdbcTemplate jdbc, FilmRowMapper mapper) {
@@ -34,7 +36,7 @@ public class FilmDbStorage extends BaseDbStorage implements FilmStorage {
                 film.getDescription(),
                 Date.valueOf(film.getReleaseDate()),
                 film.getDuration(),
-                film.getRating().getId());
+                film.getMpa().getId());
         film.setId(id);
         return film;
     }
@@ -45,7 +47,7 @@ public class FilmDbStorage extends BaseDbStorage implements FilmStorage {
                 film.getDescription(),
                 Date.valueOf(film.getReleaseDate()),
                 film.getDuration(),
-                film.getRating().getId(),
+                film.getMpa().getId(),
                 film.getId());
     }
 

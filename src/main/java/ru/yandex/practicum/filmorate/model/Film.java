@@ -17,17 +17,11 @@ import java.util.Set;
 @Data
 public class Film {
     private Long id;
-    @NotBlank(message = "Название фильма не может быть пустым")
     private String name;
-    @Size(max = 200, message = "Описание фильма не может быть больше 200 символов")
     private String description;
-    @NotNull(message = "Дата релиза не быть пустой")
-    @ReleaseDateConstraint
     private LocalDate releaseDate;
-    @NotNull(message = "Продолжительность не может быть пустой")
-    @Positive(message = "Продолжительность фильма должна быть положительной")
     private Integer duration;
-    Set<Long> likes = new HashSet<>();
-    Set<Genre> genres = new HashSet<>();
-    private MpaRating rating;
+    private Set<Long> likes = new HashSet<>();
+    private Set<Genre> genres = new HashSet<>();
+    private Rating mpa;
 }
