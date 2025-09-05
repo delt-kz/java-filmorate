@@ -21,13 +21,13 @@ public class RatingController {
 
     @GetMapping
     public List<Rating> findAll() {
-        log.debug("GET /genres");
+        log.debug("GET /mpa");
         return ratingService.findAll();
     }
 
     @GetMapping("/{id}")
     public Rating get(@PathVariable long id) {
-        log.debug("GET /genres/{}", id);
+        log.debug("GET /mpa/{}", id);
         return ratingService.get(id);
     }
 }

@@ -70,7 +70,7 @@ public class FilmService {
                 .collect(Collectors.toSet());
 
         ratingStorage.get(film.getMpa().getId())
-                .orElseThrow(() -> new NotFoundException("Рейтинга с id=" + film.getMpa() + " не существует"));
+                .orElseThrow(() -> new NotFoundException("Рейтинга с id=" + film.getMpa().getId() + " не существует"));
         for (Long genreId : genreIds) {
             if (genreStorage.get(genreId).isEmpty()) {
                 throw new NotFoundException("Жанра с id=" + genreId + " не существует");
