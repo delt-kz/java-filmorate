@@ -113,7 +113,7 @@ public class FilmService {
                 .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparingLong(Genre::getId))));
         film.setGenres(genres);
         film.setMpa(ratingStorage.get(film.getMpa().getId())
-                .orElseThrow(() -> new NotFoundException("Рейтинга с id=" + film.getMpa() + " не существует")));
+                .orElseThrow(() -> new NotFoundException("Рейтинга с id=" + film.getMpa().getId() + " не существует")));
         return film;
     }
 
