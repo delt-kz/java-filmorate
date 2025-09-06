@@ -16,7 +16,7 @@ public class RatingService {
     private final RatingDbStorage ratingStorage;
 
     public Rating get(long ratingId) {
-        return ratingStorage.get(ratingId).orElseThrow(() -> new NotFoundException("Жанра с id=" + ratingId + " не существует"));
+        return ratingStorage.get(ratingId).orElseThrow(() -> new NotFoundException("Рейтинга с id=" + ratingId + " не существует"));
     }
 
     public List<Rating> findAll() {
