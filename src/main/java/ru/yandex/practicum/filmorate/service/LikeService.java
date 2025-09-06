@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.storage.repository.LikeDbStorage;
 import ru.yandex.practicum.filmorate.storage.repository.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.repository.user.UserStorage;
 
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -36,7 +37,7 @@ public class LikeService {
         likeStorage.delete(filmId, userId);
     }
 
-    public Set<Long> getFilmLikes(long filmId) {
-        return Set.copyOf(likeStorage.getFilmLikes(filmId));
+    public List<Long> getFilmLikes(long filmId) {
+        return likeStorage.getFilmLikes(filmId);
     }
 }

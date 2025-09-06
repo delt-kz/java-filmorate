@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.storage.mapper.GenreRowMapper;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public class GenreDbStorage extends BaseDbStorage<Genre> {
@@ -14,6 +15,11 @@ public class GenreDbStorage extends BaseDbStorage<Genre> {
     private static final String FIND_ALL_QUERY = "SELECT * FROM genres";
     private static final String ADD_QUERY = "INSERT INTO genres (name) VALUES (?)";
     private static final String DELETE_QUERY = "DELETE FROM genres WHERE id = ?";
+    private static final String FIND_FILM_GENRES_QUERY = "SELECT g.id, g.name FROM films_genres AS fg" +
+            " LEFT JOIN genres AS g ON g.id = fg.genre_id" +
+            " WHERE film_id = ?";
+    private static final String REMOVE_FILM_GENRES_QUERY = "DELETE FROM films_genres WHERE film_id = ?";
+    private static final String ADD_GENRES_QUERY = "INSERT INTO films_genres (film_id, genre_id) VALUES (?,?)";
 
     public GenreDbStorage(JdbcTemplate jdbc, GenreRowMapper mapper) {
         super(jdbc, mapper);
@@ -34,4 +40,24 @@ public class GenreDbStorage extends BaseDbStorage<Genre> {
     public boolean delete(long genreId) {
         return delete(DELETE_QUERY, genreId);
     }
+
+    public List<Genre> getFilmGenres(long filmId) {
+        return findMany(FIND_FILM_GENRES_QUERY, filmId);
+    }
+
+    public void removeFilmGenres(long filmId) {
+        delete(REMOVE_FILM_GENRES_QUERY, filmId);
+    }
+
+    public void addFilmGenres(long filmId, Set<Long> genres) {
+        for (Long i : genres) {
+            insertWithoutId(ADD_GENRES_QUERY, filmId, i);
+        }
+    }
+
+    public void updateFilmGenres(long filmId, Set<Long> genres) {
+        removeFilmGenres(filmId);
+        addFilmGenres(filmId, genres);
+    }
+
 }

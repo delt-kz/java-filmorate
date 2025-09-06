@@ -10,7 +10,9 @@ import ru.yandex.practicum.filmorate.model.Rating;
 import ru.yandex.practicum.filmorate.validation.ReleaseDateConstraint;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -28,5 +30,5 @@ public class CreateFilmDto {
     private Integer duration;
     @NotNull(message = "Рейтинг не может быть пустым")
     private Rating mpa;
-    private Set<Genre> genres = new HashSet<>();
+    private List<Genre> genres = new ArrayList<>();
 }

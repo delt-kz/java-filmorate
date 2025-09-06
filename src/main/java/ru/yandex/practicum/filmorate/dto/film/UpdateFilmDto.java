@@ -9,7 +9,9 @@ import ru.yandex.practicum.filmorate.model.Rating;
 import ru.yandex.practicum.filmorate.validation.ReleaseDateConstraint;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -24,7 +26,7 @@ public class UpdateFilmDto {
     @Positive(message = "Продолжительность фильма должна быть положительной")
     private Integer duration;
     private Rating mpa;
-    private Set<Genre> genres = new HashSet<>();
+    private List<Genre> genres = new ArrayList<>();
 
     public boolean hasName() {
         return ! (name == null || name.isBlank());

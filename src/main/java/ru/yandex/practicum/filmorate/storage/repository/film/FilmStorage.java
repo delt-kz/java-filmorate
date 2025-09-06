@@ -15,4 +15,6 @@ public interface FilmStorage {
     boolean delete(Long id);
 
     boolean update(Film film);
+
+    Collection<Film> getPopular(int count);
 }

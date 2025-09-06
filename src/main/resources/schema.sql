@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS films (
     description varchar(200),
     release_date date NOT NULL,
     duration integer NOT NULL CHECK (duration > 0),
-    rating_id BIGINT
+    rating_id BIGINT REFERENCES ratings
 );
 
 CREATE TABLE IF NOT EXISTS users (
