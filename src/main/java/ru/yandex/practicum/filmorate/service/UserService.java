@@ -3,10 +3,13 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.dto.user.CreateUserDto;
+import ru.yandex.practicum.filmorate.dto.user.UpdateUserDto;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.mapper.UserMapper;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.storage.repository.user.UserStorage;
 
 import java.util.Collection;
 
@@ -16,28 +19,27 @@ import java.util.Collection;
 public class UserService {
     private final UserStorage storage;
 
-    public User add(User user) {
-        if (isEmailExists(user.getEmail())) {
+    public User add(CreateUserDto createUser) {
+        if (isEmailExists(createUser.getEmail())) {
             throw new ValidationException(
-                    "Невозможно добавить пользователя с существующим адресом электронной почты: " + user.getEmail());
+                    "Невозможно добавить пользователя с существующим адресом электронной почты: " + createUser.getEmail());
         }
-        ensureNameIsNotBlank(user);
-        user.setId(storage.getMaxId() + 1);
+        ensureNameIsNotBlank(createUser);
+        User user = UserMapper.mapToUser(createUser);
+        user = storage.put(user);
         log.debug("User ID: {}", user.getId());
-        storage.put(user.getId(), user);
         log.info("Добавлен пользователь: {}", user);
         return user;
     }
 
-    public User update(User user) {
-        if (user.getId() == null) {
+    public User update(UpdateUserDto updateUser) {
+        if (updateUser.getId() == null) {
             throw new ValidationException("Не указан id пользователя");
         }
-        if (storage.get(user.getId()) == null) {
-            throw new NotFoundException("Указан id несуществующего пользователя: " + user.getId());
-        }
-        ensureNameIsNotBlank(user);
-        storage.put(user.getId(), user);
+        User user = storage.get(updateUser.getId())
+                .map(destin -> UserMapper.updateUserFields(updateUser, destin))
+                .orElseThrow(() -> new NotFoundException("Указан id несуществующего пользователя"));
+        storage.update(user);
         log.info("Пользователь обновлен: {}", user);
         return user;
     }
@@ -47,17 +49,13 @@ public class UserService {
     }
 
     public User get(long id) {
-        User user = storage.get(id);
-        if (user == null) {
-            throw new NotFoundException("Пользователь по id:" + id + " не найден");
-        }
-        return user;
+        return storage.get(id).orElseThrow(() -> new NotFoundException("Пользователь по id:" + id + " не найден"));
     }
 
-    private void ensureNameIsNotBlank(User user) {
-        if (user.getName() == null || user.getName().isBlank()) {
-            log.warn("Имя пользователя пустое, подставляем логин как имя: {}", user.getLogin());
-            user.setName(user.getLogin());
+    private void ensureNameIsNotBlank(CreateUserDto createUser) {
+        if (createUser.getName() == null || createUser.getName().isBlank()) {
+            log.warn("Имя пользователя пустое, подставляем логин как имя: {}", createUser.getLogin());
+            createUser.setName(createUser.getLogin());
         }
     }
 

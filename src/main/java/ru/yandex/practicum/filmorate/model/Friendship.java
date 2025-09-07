@@ -1,7 +1,10 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.Data;
+
+@Data
 public class Friendship {
-    private int userId;
-    private int friendId;
+    private Long userId;
+    private Long friendId;
     private FriendshipStatus status;
 }
