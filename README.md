@@ -30,7 +30,7 @@ mvn spring-boot:run
 ```bash
 mvn clean package
 java -jar target/filmorate-0.0.1-SNAPSHOT.jar
-```
+``` 
 
 ### Конфигурация
 Основные настройки в `src/main/resources/application.properties`:
