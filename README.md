@@ -14,6 +14,13 @@
 - Справочники жанров (`/genres`) и рейтингов MPA (`/mpa`)
 - Глобальная обработка ошибок и валидация входных данных
 
+## Схема БД
+ER‑диаграмма:
+
+![ERD](diagram/filmorate-erd.png)
+
+Ключевые таблицы: `films`, `users`, `films_likes`, `genres`, `films_genres`, `ratings`, `friendships`.
+
 ## Быстрый старт
 
 ### Предусловия
@@ -108,13 +115,6 @@ curl -X POST http://localhost:8080/users \
 { "error": "Сообщение об ошибке" }
 ```
 Коды ответа: `400` (валидация/некорректный запрос), `404` (не найдено), `500` (внутренняя ошибка).
-
-## Схема БД
-DDL — в `src/main/resources/schema.sql`. ER‑диаграмма:
-
-![ERD](diagram/filmorate-erd.png)
-
-Ключевые таблицы: `films`, `users`, `films_likes`, `genres`, `films_genres`, `ratings`, `friendships`.
 
 ## Разработка
 - Проверка стиля: Checkstyle запускается на фазе `compile`
